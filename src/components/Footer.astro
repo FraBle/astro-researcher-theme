@@ -1,0 +1,25 @@
+---
+import type { FooterConfig } from "../types";
+
+interface Props {
+  footer?: FooterConfig;
+}
+
+const { footer } = Astro.props;
+---
+
+<div id="footer" class="mb-5">
+  <hr />
+  {footer && (
+    <div class="container text-center">
+      <a
+        href={footer.url}
+        title={footer.text}
+        target={footer.blank ? "_blank" : undefined}
+        rel={footer.blank ? "noopener noreferrer" : undefined}
+      >
+        <small>{footer.text}</small>
+      </a>
+    </div>
+  )}
+</div>

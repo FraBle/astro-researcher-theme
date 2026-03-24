@@ -1,0 +1,31 @@
+---
+import type { NavItem } from "../types";
+
+interface Props {
+  title: string;
+  nav: NavItem[];
+}
+
+const { title, nav } = Astro.props;
+---
+
+<div class="container mt-5">
+  <nav class="navbar navbar-expand-sm flex-column flex-sm-row text-nowrap p-0">
+    <a class="navbar-brand mx-0 mr-sm-auto" href="/" title={title}>
+      {title}
+    </a>
+    <div class="navbar-nav flex-row flex-wrap justify-content-center">
+      {nav.map((item, i) => (
+        <>
+          <a class="nav-item nav-link" href={item.url} title={item.name}>
+            {item.name}
+          </a>
+          {i < nav.length - 1 && (
+            <span class="nav-item navbar-text mx-1">/</span>
+          )}
+        </>
+      ))}
+    </div>
+  </nav>
+</div>
+<hr />
