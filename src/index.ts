@@ -9,4 +9,6 @@ export type {
   FooterConfig,
   ConsentItem,
   ConsentConfig,
+  OpenGraphConfig,
+  TwitterConfig,
 } from "./types";

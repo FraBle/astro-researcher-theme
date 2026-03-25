@@ -1,4 +1,5 @@
 ---
+import { SEO } from "astro-seo";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
@@ -10,10 +11,20 @@ interface Props {
   title: string;
   config: ResearcherConfig;
   noindex?: boolean;
+  description?: string;
 }
 
-const { title, config, noindex } = Astro.props;
+const { title, config, noindex, description } = Astro.props;
 const isProd = import.meta.env.PROD;
+const pageDescription = description || config.description;
+const canonicalURL = config.site
+  ? new URL(Astro.url.pathname, config.site).href
+  : undefined;
+const ogImage = config.openGraph?.image
+  ? config.site
+    ? new URL(config.openGraph.image, config.site).href
+    : config.openGraph.image
+  : undefined;
 ---
 
 <!doctype html>
@@ -24,8 +35,46 @@ const isProd = import.meta.env.PROD;
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>{title}</title>
-    <meta name="description" content={config.description} />
+    <SEO
+      title={title}
+      description={pageDescription}
+      canonical={canonicalURL}
+      noindex={noindex}
+      nofollow={noindex}
+      openGraph={ogImage
+        ? {
+            basic: {
+              title: title,
+              type: config.openGraph?.type || "website",
+              image: ogImage,
+              url: canonicalURL,
+            },
+            optional: {
+              description: pageDescription,
+              locale: config.openGraph?.locale || "en_US",
+              siteName: config.openGraph?.siteName || config.title,
+            },
+            image: {
+              alt: title,
+            },
+          }
+        : undefined}
+      twitter={config.twitter
+        ? {
+            card: config.twitter.card || "summary",
+            site: config.twitter.site,
+            creator: config.twitter.creator,
+            title: title,
+            description: pageDescription,
+            image: config.twitter.image
+              ? config.site
+                ? new URL(config.twitter.image, config.site).href
+                : config.twitter.image
+              : ogImage,
+            imageAlt: title,
+          }
+        : undefined}
+    />
     <meta name="author" content={config.author} />
     <link
       href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap"
@@ -53,7 +102,6 @@ const isProd = import.meta.env.PROD;
       referrerpolicy="no-referrer"
     />
     {config.favicon && <link rel="icon" type="image/ico" href={config.favicon} />}
-    {noindex && <meta name="robots" content="noindex" />}
     {isProd && config.googleAnalyticsId && <GoogleAnalytics gaId={config.googleAnalyticsId} />}
   </head>
   <body>
