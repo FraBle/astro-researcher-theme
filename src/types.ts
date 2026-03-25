@@ -33,4 +33,5 @@ export interface ResearcherConfig {
   footer?: FooterConfig;
   openGraph?: OpenGraphConfig;
   twitter?: TwitterConfig;
+  socialProfiles?: string[];
 }

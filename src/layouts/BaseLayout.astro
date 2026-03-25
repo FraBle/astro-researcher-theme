@@ -99,6 +99,18 @@ const ogImage = config.openGraph?.image
       referrerpolicy="no-referrer"
     />
     {config.favicon && <link rel="icon" type="image/ico" href={config.favicon} />}
+    {config.socialProfiles?.map((url) => (
+      <link rel="me" href={url} />
+    ))}
+    {config.site && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": config.title,
+        "url": config.site,
+        ...(config.author ? { "author": { "@type": "Person", "name": config.author } } : {}),
+      })} />
+    )}
   </head>
   <body>
     <Header title={config.title} nav={config.nav} />
