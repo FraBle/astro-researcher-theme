@@ -9,17 +9,6 @@ export interface FooterConfig {
   blank?: boolean;
 }
 
-export interface ConsentItem {
-  title: string;
-  description: string;
-  isFunctional: boolean;
-  script: string;
-}
-
-export interface ConsentConfig {
-  items: ConsentItem[];
-}
-
 export interface OpenGraphConfig {
   image: string;
   type?: string;
@@ -40,10 +29,8 @@ export interface ResearcherConfig {
   author: string;
   site?: string;
   favicon?: string;
-  googleAnalyticsId?: string;
   nav: NavItem[];
   footer?: FooterConfig;
-  consent?: ConsentConfig;
   openGraph?: OpenGraphConfig;
   twitter?: TwitterConfig;
 }

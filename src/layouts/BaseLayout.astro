@@ -2,8 +2,6 @@
 import { SEO } from "astro-seo";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import GoogleAnalytics from "../components/GoogleAnalytics.astro";
-import CookieConsent from "../components/CookieConsent.astro";
 import type { ResearcherConfig } from "../types";
 import "../styles/researcher.scss";
 
@@ -15,7 +13,6 @@ interface Props {
 }
 
 const { title, config, noindex, description } = Astro.props;
-const isProd = import.meta.env.PROD;
 const pageDescription = description || config.description;
 const canonicalURL = config.site
   ? new URL(Astro.url.pathname, config.site).href
@@ -102,7 +99,6 @@ const ogImage = config.openGraph?.image
       referrerpolicy="no-referrer"
     />
     {config.favicon && <link rel="icon" type="image/ico" href={config.favicon} />}
-    {isProd && config.googleAnalyticsId && <GoogleAnalytics gaId={config.googleAnalyticsId} />}
   </head>
   <body>
     <Header title={config.title} nav={config.nav} />
@@ -110,6 +106,5 @@ const ogImage = config.openGraph?.image
       <slot />
     </div>
     <Footer footer={config.footer} />
-    {isProd && config.consent && <CookieConsent items={config.consent.items} />}
   </body>
 </html>
